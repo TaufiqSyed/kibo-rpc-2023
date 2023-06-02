@@ -28,5 +28,9 @@ public class Point3D {
     public double getY() { return y; }
     public double getZ() { return z; }
 
+    public String toString() {
+        return x + ", " + y + ", " + z;
+    }
+
     // ... Equals, hashCode, and toString methods
 }

@@ -1,5 +1,7 @@
 package jp.jaxa.iss.kibo.rpc.uae;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import gov.nasa.arc.astrobee.types.*;
@@ -38,6 +40,13 @@ public class Robot {
 
             // Compute shortest path.
             List<Point3D> shortestPath = graph.computeShortestPath();
+
+            // logging path points
+            Log.i("omar", "Path details for ID: " + closestTarget.getId());
+            for(Point3D p : shortestPath) {
+                Log.i("omar", p.toString());
+            }
+
             boolean newTargetFound = false;
             // Move robot along shortest path.
             for (Point3D point : shortestPath) {

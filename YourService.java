@@ -1,4 +1,5 @@
 package jp.jaxa.iss.kibo.rpc.uae;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1() {
         api.startMission();
-
+        Log.i("omar", "Moving to mid point between KIZs");
         api.moveTo(new Point(10.5f, -10.2f, 4.32f), api.getRobotKinematics().getOrientation(), true);
 
         Robot robot = new Robot(Aux.toPoint3D(api.getRobotKinematics().getPosition()), 0.0f, api);
