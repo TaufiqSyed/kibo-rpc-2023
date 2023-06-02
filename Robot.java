@@ -48,8 +48,20 @@ public class Robot {
     }
 
     // This is a placeholder for the method to find the closest active target.
-    private Target findClosestActiveTarget(List<Target> targets) {
-        // TODO: Implement logic to find the closest active target.
-        return targets.get(0);
+    public Target findClosestActiveTarget(List<Target> targets) {
+        Target closestActiveTarget = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (Target target : targets) {
+            if (target.isActive()) {
+                double distance = currentPosition.distanceTo(target);
+                if (distance < closestDistance) {
+                    closestActiveTarget = target;
+                    closestDistance = distance;
+                }
+            }
+        }
+
+        return closestActiveTarget;
     }
 }
