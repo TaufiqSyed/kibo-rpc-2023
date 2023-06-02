@@ -42,8 +42,19 @@ public class Graph {
                 return false;
             }
         }
+
+        Point3D KIZ1TopLeft = new Point3D(10.3f, -10.2f, 4.32f);
+        Point3D KIZ1BottomRight = new Point3D(11.55f, -6.0f, 5.57f);
+
+        Point3D KIZ2TopLeft = new Point3D(9.5f, -10.5f, 4.02f);
+        Point3D KIZ2BottomRight = new Point3D(10.5f, -9.6f, 4.8f);
+
+        if (point1.isInsideCuboid(KIZ1TopLeft, KIZ1BottomRight) || point1.isInsideCuboid(KIZ2TopLeft, KIZ2BottomRight))
+            if (point2.isInsideCuboid(KIZ1TopLeft, KIZ1BottomRight) || point2.isInsideCuboid(KIZ2TopLeft, KIZ2BottomRight))
+                return true;
+
         // If no intersections found, return true
-        return true;
+        return false;
     }
 
     public List<Point3D> computeShortestPath() {
