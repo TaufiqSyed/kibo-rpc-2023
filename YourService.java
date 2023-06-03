@@ -53,19 +53,26 @@ public class YourService extends KiboRpcService {
 
     public static ArrayList<Target> targets = new ArrayList<>();
     static {
-        targets.add(new Target(11.2625, -10.58, 5.3625, new Quaternion(0.707f, 0, 0, 0.707f), 1));
-        targets.add(new Target(10.513384, -9.085172, 3.76203, new Quaternion(0, 0, 0, 1), 2));
-        targets.add(new Target(10.6031, -7.71007, 3.76093, new Quaternion(0.707f, 0, 0, 0.707f), 3));
-        targets.add(new Target(9.866984, -6.673972, 5.09531, new Quaternion(-0.5f, 0.5f, -0.5f, 0.5f), 4));
-        targets.add(new Target(11.102, -8.0304, 5.9076, new Quaternion(1, 0, 0, 0), 5));
-        targets.add(new Target(12.023, -8.989, 4.8305, new Quaternion(0.5f, 0.5f, -0.5f, -0.5f), 6));
+        targets.add(new Target(1, 11.2746, -9.92284, 5.2988, new Quaternion(0f, 0f, -0.707f, 0.707f)));
+        targets.add(new Target(2, 10.612, -9.0709, 4.48, new Quaternion(0.5f, 0.5f, -0.5f, 0.5f)));
+        targets.add(new Target(3, 10.71, -7.7, 4.48, new Quaternion(0, 0.707f, 0, 0.707f)));
+        targets.add(new Target(4, 10.51, -6.7185, 5.1804, new Quaternion(0, 0, -1, 0)));
+        targets.add(new Target(5, 11.114, -7.9756, 5.3393, new Quaternion(-0.5f, -0.5f, -0.5f, 0.5f)));
+        targets.add(new Target(6, 11.355, -8.9929, 4.7818, new Quaternion(0, 0, 0, 1)));
+
+//        targets.add(new Target(11.2625, -10.58, 5.3625, new Quaternion(0.707f, 0, 0, 0.707f), 1));
+//        targets.add(new Target(10.513384, -9.085172, 3.76203, new Quaternion(0, 0, 0, 1), 2));
+//        targets.add(new Target(10.6031, -7.71007, 3.76093, new Quaternion(0.707f, 0, 0, 0.707f), 3));
+//        targets.add(new Target(9.866984, -6.673972, 5.09531, new Quaternion(-0.5f, 0.5f, -0.5f, 0.5f), 4));
+//        targets.add(new Target(11.102, -8.0304, 5.9076, new Quaternion(1, 0, 0, 0), 5));
+//        targets.add(new Target(12.023, -8.989, 4.8305, new Quaternion(0.5f, 0.5f, -0.5f, -0.5f), 6));
     }
 
     @Override
     protected void runPlan1() {
         api.startMission();
         Log.i("omar", "Moving to mid point between KIZs");
-        api.moveTo(new Point(10.5f, -10.2f, 4.32f), api.getRobotKinematics().getOrientation(), true);
+        api.moveTo(new Point(10.4f, -9.9f, 4.56f), api.getRobotKinematics().getOrientation(), true);
 
         Robot robot = new Robot(Util.toPoint3D(api.getRobotKinematics().getPosition()), 0.0f, api);
         robot.start(obstacles, targets);

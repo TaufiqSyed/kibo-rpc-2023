@@ -10,8 +10,9 @@ public class Target extends Point3D {
     private Quaternion orientation;
     private int id;
 
-    public Target(double x, double y, double z, Quaternion orientation, int id) {
+    public Target(int id, double x, double y, double z, Quaternion orientation) {
         super(x, y, z);
+        this.orientation = orientation;
         this.active = false;
         this.id = id;
     }
