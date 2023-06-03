@@ -101,6 +101,7 @@ public class Robot {
             if (!newTargetFound) {
                 api.laserControl(true);
                 api.takeTargetSnapshot(closestTarget.getId());
+                Log.i("omar", "shining laser at target: " + closestTarget.getId());
             }
             ++iteration;
             // Remove the reached target from the list if we didn't change trajectory
