@@ -3,7 +3,7 @@ package jp.jaxa.iss.kibo.rpc.uae;
 import gov.nasa.arc.astrobee.types.Point;
 
 public class Point3D {
-    private double x, y, z;
+    protected double x, y, z;
 
     public Point3D(double x, double y, double z) {
         this.x = x;

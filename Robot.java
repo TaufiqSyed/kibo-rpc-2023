@@ -23,23 +23,43 @@ public class Robot {
         this.api = api;
     }
 
-    public void start(List<Obstacle> obstacles, List<Target> targets) {
-        while (!targets.isEmpty() && (iteration < 50)) {
-            // Update obstacles with robot size.
-            List<Obstacle> enlargedObstacles = new ArrayList<>();
-            for (Obstacle obstacle : obstacles) {
-                enlargedObstacles.add(obstacle.enlarge(this.size));
-            }
+    public void start(List<Obstacle> obstacles) {
+        ArrayList<Target> activatedTargets = new ArrayList<>();
+        updateTargets(activatedTargets);
 
+        Log.i("Taufiq", "First Update Targets");
+
+        while (iteration < 200) {
+            if (activatedTargets.isEmpty()) {
+                Log.i("Taufiq", "Targets found empty; i = " + iteration);
+                try {
+                    Thread.sleep(500);
+                } catch (Exception e) {}
+                updateTargets((ArrayList<Target>)(activatedTargets));
+
+                Log.i("Taufiq", "Updated Targets");
+                continue;
+            }
+            // Update obstacles with robot size.
+//            List<Obstacle> enlargedObstacles = new ArrayList<>();
+//            for (Obstacle obstacle : obstacles) {
+//                enlargedObstacles.add(obstacle.enlarge(this.size));
+//            }
+
+            List<Obstacle> enlargedObstacles = obstacles;
 
             // Find closest active target.
-            Target closestTarget = findClosestActiveTarget(targets);
+            Target closestTarget = findClosestActiveTarget(activatedTargets);
+            Log.i("Taufiq", "Found closest target; i = " + iteration);
 
             // Construct visibility graph.
             Graph graph = new Graph(currentPosition, closestTarget, enlargedObstacles);
+            Log.i("Taufiq", "Constructed visibility graph; i = " + iteration);
+
 
             // Compute shortest path.
             List<Point3D> shortestPath = graph.computeShortestPath();
+            Log.i("Taufiq", "Computed shortest path; i = " + iteration);
 
             // logging path points
             Log.i("omar", "Path details for ID: " + closestTarget.getId());
@@ -68,10 +88,10 @@ public class Robot {
                 currentPosition = point;
 
                 // update target list using API
-                updateTargets((ArrayList<Target>) targets);
+                updateTargets((ArrayList<Target>) activatedTargets);
 
                 // If a new target is activated, break out of the current path and recompute.
-                Target newTarget = findClosestActiveTarget(targets);
+                Target newTarget = findClosestActiveTarget(activatedTargets);
                 if (!newTarget.equals(closestTarget)) {
                     newTargetFound = true;
                     break;
@@ -85,7 +105,7 @@ public class Robot {
             ++iteration;
             // Remove the reached target from the list if we didn't change trajectory
             if (!newTargetFound)
-                targets.remove(closestTarget);
+                activatedTargets.remove(closestTarget);
         }
         api.reportMissionCompletion("my report");
     }
@@ -96,13 +116,13 @@ public class Robot {
         double closestDistance = Double.MAX_VALUE;
 
         for (Target target : targets) {
-            if (target.isActive()) {
+//            if (target.isActive()) {
                 double distance = currentPosition.distanceTo(target);
                 if (distance < closestDistance) {
                     closestActiveTarget = target;
                     closestDistance = distance;
                 }
-            }
+//            }
         }
 
         return closestActiveTarget;
@@ -111,6 +131,7 @@ public class Robot {
     void updateTargets(ArrayList<Target> targets) {
         targets.clear();
         for(int i : api.getActiveTargets()) {
+            Target t = YourService.targets.get(i-1).clone();
             targets.add(YourService.targets.get(i - 1));
         }
     }

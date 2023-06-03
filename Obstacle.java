@@ -15,7 +15,9 @@ public class Obstacle {
     public Point3D[] getVerticesAABB() {
         // We assume that topLeft and bottomRight are the minimum and maximum corners respectively.
         // That is, topLeft has the smallest x, y, z coordinates and bottomRight has the largest x, y, z coordinates.
-        return new Point3D[] {topLeft, bottomRight};
+        Point3D[] points = new Point3D[] {topLeft, bottomRight};
+
+        return points;
     }
 
     public List<Point3D> getVertices() {
