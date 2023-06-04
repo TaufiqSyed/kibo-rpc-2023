@@ -76,7 +76,7 @@ public class YourService extends KiboRpcService {
 
 
         api.moveTo(Util.toPoint(targets.get(5-1)), targets.get(5-1).getOrientation(), true);
-        Robot robot = new Robot(Util.toPoint3D(api.getRobotKinematics().getPosition()), 0.0f, api);
+        Robot robot = new Robot(Util.toPoint3D(api.getRobotKinematics().getPosition()), 0.5f, api);
         robot.start(obstacles);
 
 //        final int MAX_ITERATIONS = 5;
