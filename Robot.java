@@ -9,7 +9,7 @@ import gov.nasa.arc.astrobee.Result;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcApi;
 
 public class Robot {
-    static final int MAX_ITERATIONS = 1;
+    static final int MAX_ITERATIONS = 5;
     private Point3D currentPosition;
     private float size;
     KiboRpcApi api;
@@ -76,11 +76,12 @@ public class Robot {
                     float offset = 0f;
                     if (iteration == 0) {
                         Point p = point.toPoint();
-                        p = new Point(p.getX(), p.getY() - 1.4f, p.getZ());
+                        p = new Point(p.getX(), p.getY(), p.getZ());
                         result = api.moveTo(p, closestTarget.getOrientation(), true);
                     } else {
                         result = api.moveTo(point.toPoint(), closestTarget.getOrientation(), true);
                     }
+
 
                     ++trial_i;
                 } while (!result.hasSucceeded() && (trial_i < MAX_ITERATIONS));
@@ -97,6 +98,9 @@ public class Robot {
                     break;
                 }
             }
+
+            Log.i("omar2", "moving towards");
+            moveTowards(closestTarget.getPoint3D(), closestTarget.getOrientation());
 
             if (!newTargetFound) {
                 api.laserControl(true);
@@ -135,6 +139,38 @@ public class Robot {
             Target t = YourService.targets.get(i-1).clone();
             targets.add(YourService.targets.get(i - 1));
         }
+    }
+
+    public void moveTowards(Point3D targetPosition, Quaternion targetOrientation) {
+        double distance = this.currentPosition.distanceTo(targetPosition);
+
+        // Calculate direction vector from robot to target
+        Point3D direction = new Point3D(targetPosition.getX() - this.currentPosition.getX(),
+                targetPosition.getY() - this.currentPosition.getY(),
+                targetPosition.getZ() - this.currentPosition.getZ());
+
+        // Normalize direction vector
+        double magnitude = Math.sqrt(direction.getX() * direction.getX() +
+                direction.getY() * direction.getY() +
+                direction.getZ() * direction.getZ());
+        Point3D normalizedDirection = new Point3D(direction.getX()/magnitude,
+                direction.getY()/magnitude,
+                direction.getZ()/magnitude);
+
+        float proportion = 0.75f;
+        // Move the robot by 0.5 that distance in the direction of the target
+        Point3D newPosition = new Point3D(this.currentPosition.getX() + normalizedDirection.getX() * proportion * distance,
+                this.currentPosition.getY() + normalizedDirection.getY() * proportion * distance,
+                this.currentPosition.getZ() + normalizedDirection.getZ() * proportion * distance);
+
+        // Assuming moveTo is a method in Robot class that moves robot to the new position.
+        // Modify this according to your actual method for moving the robot.
+        Result result;
+        int trial_i = 0;
+        do {
+            result = api.moveTo(newPosition.toPoint(), targetOrientation, true);
+            ++trial_i;
+        } while (!result.hasSucceeded() && (trial_i < MAX_ITERATIONS));
     }
 
 }
