@@ -100,7 +100,8 @@ public class Robot {
             }
 
             Log.i("omar2", "moving towards");
-            moveTowards(closestTarget.getPoint3D(), closestTarget.getOrientation());
+//            moveTowards(closestTarget.getPoint3D(), closestTarget.getOrientation());
+            moveTowards(Util.toPoint3D(YourService.coords.get(closestTarget.getId() - 1)), YourService.orientations.get(closestTarget.getId() - 1) );
 
             if (!newTargetFound) {
                 api.laserControl(true);
